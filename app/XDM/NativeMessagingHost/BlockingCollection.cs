@@ -13,6 +13,7 @@ namespace NetFX.Polyfill2
 
         public T Take()
         {
+            //locks on queueLock, if queue is empty, wait for objectAvailableEvent to be set, then take the first item in the queue
             lock (_queueLock)
             {
                 if (_queue.Count > 0)
@@ -26,6 +27,7 @@ namespace NetFX.Polyfill2
 
         public void Add(T obj)
         {
+            //lock on queueLock, add the object to the queue, then set the objectAvailableEvent
             lock (_queueLock)
             {
                 _queue.Enqueue(obj);
